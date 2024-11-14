@@ -149,9 +149,7 @@
 
         <script>
             document.getElementById("sendMessageBtn").addEventListener("click", function (event) {
-                event.preventDefault(); // Prevents form submission (if there's a form involved)
-        
-                // Clear the fields by setting their value to an empty string
+                event.preventDefault(); 
                 document.getElementById("name").value = "";
                 document.getElementById("email").value = "";
 		document.getElementById("contact").value = "";
