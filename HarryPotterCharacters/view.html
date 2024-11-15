@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Harry Potter Character Directory</title>
+  <link rel="icon" href="asset/hpLogo.png" type="image/png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <style>
+    body {
+      background-image: url('asset/hpletterheader.png');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-position: top;
+      background-size: cover;
+      color: #ffffff;
+      font-family: "Poppins", serif;
+    }
+
+    .containerdetails {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .navbar {
+      background: linear-gradient(90deg, #2F4F4F, #003366, #9B111E, #F0A500) !important;
+      box-shadow: 0 10px 25px rgba(14, 11, 11, 0.7);
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+    }
+
+
+    .imgContainer {
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 7px solid #edebe9;
+      margin: 0 auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    #characterImage {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+
+    .character-details {
+      margin-left: 20px;
+      flex: 1;
+    }
+
+    .character-details .display-3 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .character-details .h4 {
+      font-weight: 200;
+    }
+
+    .character-details p {
+      margin: 5px 0;
+    }
+
+    .badge {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+
+    .logo-container {
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 5px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: 30px;
+      text-align: center;
+      background: linear-gradient(45deg, #6f4f1f, #8b5e3c);
+      color: white;
+      font-size: 1.2rem;
+      border-radius: 5px;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .back-btn:hover {
+      background: linear-gradient(45deg, #8b5e3c, #6f4f1f);
+    }
+
+
+    .btn-container {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-xl navbar-custom shadow">
+    <div class="container">
+      <a class="navbar-brand mx-auto" href="#">
+        <img src="asset/hp.png" alt="HP" width="auto" height="52" class="align-text-middle">
+      </a>
+    </div>
+  </nav>
+
+  <div class="logo-container">
+    <img src="asset/hpLogo.png" alt="Harry Potter Logo" width="200" height="auto">
+  </div>
+
+  <div class="containerdetails">
+    <div class="row">
+      <div class="col-md-6 text-center">
+        <div class="imgContainer" id="imgContainer">
+          <img id="characterImage" />
+        </div>
+      </div>
+
+      <div class="col-md-6 character-details">
+        <div class="display-3" id="title"></div>
+        <div class="h4 mt-3" id="house"></div>
+        <div class="badge bg-primary" id="species"></div>
+        <div class="badge bg-success mt-2" id="patronus"></div>
+        <div class="badge bg-danger mt-2" id="status"></div>
+
+        <div class="mt-4">
+          <p><strong>Gender:</strong> <span id="gender"></span></p>
+          <p><strong>Date of Birth:</strong> <span id="dob"></span></p>
+          <p><strong>Eye Color:</strong> <span id="eyeColor"></span></p>
+          <p><strong>Hair Color:</strong> <span id="hairColor"></span></p>
+          <p><strong>Wand:</strong> <span id="wand"></span></p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="btn-container">
+      <a href="list.html" class="back-btn">Get to know more about other characters</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+  <script>
+    const getCharacterDetails = async (characterName) => {
+      try {
+        const response = await fetch('https://hp-api.onrender.com/api/characters');
+        const characters = await response.json();
+
+        const character = characters.find(c => c.name === characterName);
+
+        if (character) {
+          document.getElementById("title").innerText = character.name;
+          document.getElementById("characterImage").src = character.image;
+          document.getElementById("house").innerText = `House: ${character.house || "Unknown House"}`;
+          document.getElementById("species").innerText = `Species: ${character.species || "Unknown Species"}`;
+          document.getElementById("patronus").innerText = `Patronus: ${character.patronus || "None"}`;
+          document.getElementById("status").innerText = `Status: ${character.alive ? 'Alive' : 'Deceased'}`;
+          document.getElementById("gender").innerText = character.gender || "Unknown";
+          document.getElementById("dob").innerText = character.dateOfBirth || "Unknown Date";
+          document.getElementById("eyeColor").innerText = character.eyeColour || "Unknown";
+          document.getElementById("hairColor").innerText = character.hairColour || "Unknown";
+          document.getElementById("wand").innerText = character.wand ? `${character.wand.wood || "Unknown Wood"} / ${character.wand.core || "Unknown Core"} / ${character.wand.length || "Unknown Length"}` : "No Wand Info";
+
+          const house = character.house;
+          changeBackgroundImage(house);
+        } else {
+          document.getElementById("title").innerText = "Character Not Found";
+        }
+      } catch (error) {
+        console.error("Error fetching character details:", error);
+        document.getElementById("title").innerText = "Error Fetching Data";
+      }
+    };
+
+    const changeBackgroundImage = (house) => {
+      let backgroundImage = '';
+      switch (house) {
+        case 'Gryffindor':
+          backgroundImage = 'url("asset/gryffindor.jpg")';
+          break;
+        case 'Slytherin':
+          backgroundImage = 'url("asset/slytherin.jpg")';
+          break;
+        case 'Hufflepuff':
+          backgroundImage = 'url("asset/hufflepuff.jpg")';
+          break;
+        case 'Ravenclaw':
+          backgroundImage = 'url("asset/ravenclaw.jpg")';
+          break;
+        default:
+          backgroundImage = 'url("asset/defaulthouse.jpg")';
+          break;
+      }
+      document.body.style.backgroundImage = backgroundImage;
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const characterName = urlParams.get('characterID');
+    if (characterName) {
+      getCharacterDetails(characterName);
+    } else {
+      document.getElementById("title").innerText = "No Character ID Provided";
+    }
+  </script>
+
+</body>
+
+</html>
